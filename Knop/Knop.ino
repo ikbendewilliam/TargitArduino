@@ -6,11 +6,14 @@ static const int PIN_BUTTON = 7;
 static const Command CMD_END(";");
 static const Command CMD_LED_ON("LedOn");
 static const Command CMD_LED_OFF("LedOff");
+static const String STR_BUTTON_PRESSED = "BtnPressed";
+static const String STR_BUTTON_RELEASED = "BtnReleased";
 
 SoftwareSerial mySerial(2, 3); // RX, TX
 String inputString = "";
 bool previousButtonState;
-bool ButtonState;
+bool buttonState;
+
 void setup()
 {
   Serial.begin(9600);
@@ -23,21 +26,16 @@ void setup()
 }
 
 void loop()
-{ // run over and over
-
-  //  if (Serial.available()) {
-  //    mySerial.write(Serial.read());
-  //  }
-  ButtonState = digitalRead(PIN_BUTTON);
-  if(previousButtonState != ButtonState){
-      if(!ButtonState){
-         mySerial.println("in");
-      }else{
-        mySerial.println("uit");
-      }  
-      previousButtonState = ButtonState;
+{
+  buttonState = digitalRead(PIN_BUTTON);
+  if (previousButtonState != buttonState) {
+    if (!buttonState) {
+      mySerial.println(STR_BUTTON_PRESSED);
+    } else {
+      mySerial.println(STR_BUTTON_RELEASED);
+    }
+    previousButtonState = buttonState;
   }
-  
 
   while (mySerial.available()) {
     // get the new byte
