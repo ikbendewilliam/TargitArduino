@@ -19,8 +19,8 @@ class Command
       int commandPlace = string.indexOf(_value);
       int braceOpen = string.indexOf('(', commandPlace + 1);
       int braceClose = string.indexOf(')', braceOpen + 1);
-      String parameter = string.substring(braceOpen,braceClose);
+      String parameter = string.substring(braceOpen + 1,braceClose);
+      //Serial.println(parameter);
       return parameter.toInt();
     }
 };
-
