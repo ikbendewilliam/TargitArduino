@@ -16,7 +16,9 @@ bool previousButtonState;
 bool buttonState;
 bool ledFlash = false;
 bool flashstate = false;
-unsigned long previousMillis = 0; 
+unsigned long previousMillis = 0;
+int interval = 2000; // for debugging
+
 void setup()
 {
   Serial.begin(9600);
@@ -63,6 +65,7 @@ void loop()
     else if (CMD_LED_FLASH.inString(inputString))
     {
       ledFlash = true;
+      interval = CMD_LED_FLASH.getFirstParameter(inputString);
       //Serial.println("Flash");
     }
     inputString = "";
@@ -70,7 +73,6 @@ void loop()
 
   if (ledFlash)
   {
-     int interval = 250;
      unsigned long currentMillis = millis();
      if (currentMillis - previousMillis >= interval) {
           previousMillis = currentMillis;
