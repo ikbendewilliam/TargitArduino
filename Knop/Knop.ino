@@ -13,6 +13,7 @@ SoftwareSerial mySerial(2, 3); // RX, TX
 String inputString = "";
 bool previousButtonState;
 bool buttonState;
+bool ledOn = false;
 
 void setup()
 {
@@ -47,14 +48,22 @@ void loop()
   {
     if (CMD_LED_ON.inString(inputString))
     {
-      digitalWrite(PIN_LED, HIGH);
+      ledOn = true;
       Serial.println("Aan");
     }
     else if (CMD_LED_OFF.inString(inputString))
     {
-      digitalWrite(PIN_LED, LOW);
+      ledOn = false;
       Serial.println("Uit");
     }
     inputString = "";
+  }
+
+  if (ledOn)
+  {
+    digitalWrite(PIN_LED, HIGH);
+    delay(250);
+    digitalWrite(PIN_LED, LOW);
+    delay(250);
   }
 }
