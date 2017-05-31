@@ -6,6 +6,7 @@ static const int PIN_BUTTON = 7;
 static const Command CMD_END(";");
 static const Command CMD_LED_ON("LedOn");
 static const Command CMD_LED_OFF("LedOff");
+static const Command CMD_LED_FLASH("LedFlash");
 static const String STR_BUTTON_PRESSED = "BtnPressed";
 static const String STR_BUTTON_RELEASED = "BtnReleased";
 
@@ -13,7 +14,7 @@ SoftwareSerial mySerial(2, 3); // RX, TX
 String inputString = "";
 bool previousButtonState;
 bool buttonState;
-bool ledOn = false;
+bool ledFlash = false;
 
 void setup()
 {
@@ -48,18 +49,25 @@ void loop()
   {
     if (CMD_LED_ON.inString(inputString))
     {
-      ledOn = true;
+      ledFlash = false;
+      digitalWrite(PIN_LED, HIGH);
       Serial.println("Aan");
     }
     else if (CMD_LED_OFF.inString(inputString))
     {
-      ledOn = false;
+      ledFlash = false;
+      digitalWrite(PIN_LED, LOW);
       Serial.println("Uit");
+    }
+    else if (CMD_LED_FLASH.inString(inputString))
+    {
+      ledFlash = true;
+      Serial.println("Flash");
     }
     inputString = "";
   }
 
-  if (ledOn)
+  if (ledFlash)
   {
     digitalWrite(PIN_LED, HIGH);
     delay(250);
