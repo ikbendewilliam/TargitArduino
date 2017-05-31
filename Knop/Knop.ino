@@ -15,7 +15,8 @@ String inputString = "";
 bool previousButtonState;
 bool buttonState;
 bool ledFlash = false;
-
+bool flashstate = false;
+unsigned long previousMillis = 0; 
 void setup()
 {
   Serial.begin(9600);
@@ -51,27 +52,30 @@ void loop()
     {
       ledFlash = false;
       digitalWrite(PIN_LED, HIGH);
-      Serial.println("Aan");
+      //Serial.println("Aan");
     }
     else if (CMD_LED_OFF.inString(inputString))
     {
       ledFlash = false;
       digitalWrite(PIN_LED, LOW);
-      Serial.println("Uit");
+      //Serial.println("Uit");
     }
     else if (CMD_LED_FLASH.inString(inputString))
     {
       ledFlash = true;
-      Serial.println("Flash");
+      //Serial.println("Flash");
     }
     inputString = "";
   }
 
   if (ledFlash)
   {
-    digitalWrite(PIN_LED, HIGH);
-    delay(250);
-    digitalWrite(PIN_LED, LOW);
-    delay(250);
+     int interval = 250;
+     unsigned long currentMillis = millis();
+     if (currentMillis - previousMillis >= interval) {
+          previousMillis = currentMillis;
+          flashstate = !flashstate;
+          digitalWrite(PIN_LED, flashstate);          
+     }
   }
 }
