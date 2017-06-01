@@ -53,12 +53,14 @@ void loop()
     if (CMD_LED_ON.inString(inputString))
     {
       ledFlash = false;
+      flashstate = false;
       digitalWrite(PIN_LED, HIGH);
       //Serial.println("Aan");
     }
     else if (CMD_LED_OFF.inString(inputString))
     {
       ledFlash = false;
+      flashstate = false;
       digitalWrite(PIN_LED, LOW);
       //Serial.println("Uit");
     }
